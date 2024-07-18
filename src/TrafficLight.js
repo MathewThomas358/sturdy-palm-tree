@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const TrafficLight = () => {
-  const [color, setColor] = useState('black');
-  const [index, setIndex] = useState(0);
+  const [colorIndex, setColorIndex] = useState(-1);
 
   const colors = [
     { color: 'green', duration: 4000 },
@@ -12,40 +11,58 @@ const TrafficLight = () => {
 
   useEffect(() => {
     let timer;
-    if (color !== 'black') {
+    if (colorIndex >= 0) {
       timer = setTimeout(() => {
-        setIndex((prevIndex) => (prevIndex + 1) % colors.length);
-      }, colors[index].duration);
+        setColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
+      }, colors[colorIndex].duration);
     }
     return () => clearTimeout(timer);
-  }, [color, index, colors]);
+  }, [colorIndex]);
 
   const handleClick = () => {
-    if (color === 'black') {
-      setColor(colors[0].color);
+    if (colorIndex === -1) {
+      setColorIndex(0);
     } else {
-      setColor('black');
+      setColorIndex(-1);
     }
   };
 
-  useEffect(() => {
-    if (color !== 'black') {
-      setColor(colors[index].color);
-    }
-  }, [index, colors, color]);
-
   return (
     <div>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '20px' }}>
       <div
-        style={{
-          width: '100px',
-          height: '100px',
-          borderRadius: '50%',
-          backgroundColor: color,
-          margin: '20px auto',
-        }}
-      ></div>
-      <button onClick={handleClick}>On/Off</button>
+          data-testid="red-light"
+          style={{
+            width: '100px',
+            height: '100px',
+            borderRadius: '50%',
+            backgroundColor: colorIndex === 2 ? 'red' : '#592e2e',
+            margin: '10px',
+          }}
+        ></div>
+        <div
+          data-testid="yellow-light"
+          style={{
+            width: '100px',
+            height: '100px',
+            borderRadius: '50%',
+            backgroundColor: colorIndex === 1 ? 'yellow' : '#524b07',
+            margin: '10px',
+          }}
+        ></div>
+        <div
+          data-testid="green-light"
+          style={{
+            width: '100px',
+            height: '100px',
+            borderRadius: '50%',
+            backgroundColor: colorIndex === 0 ? 'green' : '#344f3b',
+            margin: '10px',
+          }}
+        ></div>
+        
+      </div>
+      <button onClick={handleClick}>Start Traffic Light</button>
     </div>
   );
 };

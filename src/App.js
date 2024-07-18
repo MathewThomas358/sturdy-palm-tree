@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
-import ColorChangingCircle from './TrafficLight';
+import TrafficLight from './TrafficLight';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <ColorChangingCircle />
+        <TrafficLight />
       </header>
     </div>
   );
